@@ -68,12 +68,12 @@ where member_casual = 'member'
 select start_station_name, member_casual, count(*)
 from `202004-divvy-tripdata`
 group by start_station_name, member_casual
-* this will give the name and the number of visits for each station 
+# this will give the name and the number of visits for each station 
 ================================
 SELECT end_station_name, COUNT(*) as visits
 FROM `202004-divvy-tripdata`
 GROUP BY end_station_name;
-* this will give the name and the number of visits for each station 
+# this will give the name and the number of visits for each station 
 
 ## find out which date was visited the most 
 SELECT start_date, COUNT(*) as visits
