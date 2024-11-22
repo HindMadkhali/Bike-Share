@@ -13,7 +13,7 @@ ALTER TABLE `202004-divvy-tripdata`
 ADD COLUMN day_of_the_week CHAR(25)
 ================================
 ALTER TABLE `202004-divvy-tripdata` 
-ADD COLUMN day_of_the_week INT(25)
+ADD COLUMN hour_of_the_day varchar(25)
 
 
 ## Add values to new columns:
@@ -47,7 +47,7 @@ where trip_duration_time <= 0
 
 ### DATA ANALYSIS
 
-## find statistcs for Casuals and members
+## find statistcs trip duration for Casuals and members
 select 
 avg(trip_duration) as average_casual,
 min(trip_duration) as minimum_casual,
@@ -64,31 +64,69 @@ sum(trip_duration) as sum_member
 from `202004-divvy-tripdata`
 where member_casual = 'member'
 
-## find out which stations were visited the most 
-select start_station_name, member_casual, count(*)
+## find out which start stations were visited the most by members and casuals
+select start_station_name, count(*) as visits
 from `202004-divvy-tripdata`
-group by start_station_name, member_casual
-# this will give the name and the number of visits for each station 
+where member_casual = 'casual'
+group by start_station_name
+order by visits desc
+limit 1
 ================================
-SELECT end_station_name, COUNT(*) as visits
-FROM `202004-divvy-tripdata`
-GROUP BY end_station_name;
-# this will give the name and the number of visits for each station 
+select start_station_name, count(*) as visits
+from `202004-divvy-tripdata`
+where member_casual = 'member'
+group by start_station_name
+order by visits desc
+limit 1
+# this will give the name and the number of visits for the most visited station 
 
-## find out which date was visited the most 
-SELECT start_date, COUNT(*) as visits
-FROM `202004-divvy-tripdata`
-GROUP BY start_date;
+## find out which start stations were visited the least by members and casuals
+select start_station_name, count(*) as visits
+from `202004-divvy-tripdata`
+where member_casual = 'casual'
+group by start_station_name
+order by visits asc
+limit 1
 ================================
-SELECT end_date, COUNT(*) as visits
+select start_station_name, count(*) as visits
+from `202004-divvy-tripdata`
+where member_casual = 'member'
+group by start_station_name
+order by visits asc
+limit 1
+# this will give the name and the number of visits for the least visited station 
+
+## find out which date had the most\least rides
+SELECT start_date, COUNT(*) as rides
 FROM `202004-divvy-tripdata`
-GROUP BY end_date;
+GROUP BY start_date
+order by rides desc
+limit 1
+================================
+SELECT start_date, COUNT(*) as rides
+FROM `202004-divvy-tripdata`
+GROUP BY start_date
+order by rides asc
+limit 1
+
+## find out which week day had the most\least rides
+SELECT day_of_the_week, COUNT(*) as rides
+FROM `202004-divvy-tripdata`
+GROUP BY day_of_the_week
+order by rides desc
+limit 1
+================================
+SELECT day_of_the_week, COUNT(*) as rides
+FROM `202004-divvy-tripdata`
+GROUP BY day_of_the_week
+order by rides asc
+limit 1
 
 ## find out the total number of rides member\casual
-select count(*)
+select count(*) as total_rides_casual
 from`202004-divvy-tripdata`
-where member_casual = 'member'
+where member_casual = 'casual'
 ================================
-select count(*)
+select count(*) as total_rides_member
 from`202004-divvy-tripdata`
 where member_casual = 'member'
