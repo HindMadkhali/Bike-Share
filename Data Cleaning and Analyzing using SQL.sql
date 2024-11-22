@@ -64,69 +64,160 @@ sum(trip_duration) as sum_member
 from `202004-divvy-tripdata`
 where member_casual = 'member'
 
-## find out which start stations were visited the most by members and casuals
-select start_station_name, count(*) as visits
+## find out which start stations were visited the most\least by members and casuals
+select *
+from (
+select start_station_name, member_casual, count(ride_id) as rides
 from `202004-divvy-tripdata`
-where member_casual = 'casual'
-group by start_station_name
-order by visits desc
-limit 1
-================================
-select start_station_name, count(*) as visits
+group by start_station_name, member_casual) as station_rides
+having rides = (select 
+max(rides)
+from (select start_station_name, member_casual, count(ride_id) as rides
 from `202004-divvy-tripdata`
-where member_casual = 'member'
-group by start_station_name
-order by visits desc
-limit 1
-# this will give the name and the number of visits for the most visited station 
-
-## find out which start stations were visited the least by members and casuals
-select start_station_name, count(*) as visits
+group by start_station_name, member_casual) as max_rides
+where max_rides.member_casual = station_rides.member_casual
+)
+union all
+select *
+from (
+select start_station_name, member_casual, count(ride_id) as rides
 from `202004-divvy-tripdata`
-where member_casual = 'casual'
-group by start_station_name
-order by visits asc
-limit 1
-================================
-select start_station_name, count(*) as visits
+group by start_station_name, member_casual) as station_rides
+having rides = (select 
+min(rides)
+from (select start_station_name, member_casual, count(ride_id) as rides
 from `202004-divvy-tripdata`
-where member_casual = 'member'
-group by start_station_name
-order by visits asc
-limit 1
-# this will give the name and the number of visits for the least visited station 
+group by start_station_name, member_casual) as min_rides
+where min_rides.member_casual = station_rides.member_casual
+)
 
-## find out which date had the most\least rides
-SELECT start_date, COUNT(*) as rides
-FROM `202004-divvy-tripdata`
-GROUP BY start_date
-order by rides desc
-limit 1
-================================
-SELECT start_date, COUNT(*) as rides
-FROM `202004-divvy-tripdata`
-GROUP BY start_date
-order by rides asc
-limit 1
+## find out which end stations were visited the most\least by members and casuals
+select *
+from (
+select end_station_name, member_casual, count(ride_id) as rides
+from `202004-divvy-tripdata`
+group by end_station_name, member_casual) as station_rides
+having rides = (select 
+max(rides)
+from (select end_station_name, member_casual, count(ride_id) as rides
+from `202004-divvy-tripdata`
+group by end_station_name, member_casual) as max_rides
+where max_rides.member_casual = station_rides.member_casual
+)
+union all
+select *
+from (
+select end_station_name, member_casual, count(ride_id) as rides
+from `202004-divvy-tripdata`
+group by end_station_name, member_casual) as station_rides
+having rides = (select 
+min(rides)
+from (select end_station_name, member_casual, count(ride_id) as rides
+from `202004-divvy-tripdata`
+group by end_station_name, member_casual) as min_rides
+where min_rides.member_casual = station_rides.member_casual
+)
 
-## find out which week day had the most\least rides
-SELECT day_of_the_week, COUNT(*) as rides
-FROM `202004-divvy-tripdata`
-GROUP BY day_of_the_week
-order by rides desc
-limit 1
-================================
-SELECT day_of_the_week, COUNT(*) as rides
-FROM `202004-divvy-tripdata`
-GROUP BY day_of_the_week
-order by rides asc
-limit 1
+## find out which date had the most\least rides by members and casuals
+select *
+from (
+select start_date, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by start_date, member_casual) as date_rides
+having rides = (
+select 
+max(rides)
+from (select start_date, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by start_date, member_casual) as max_rides
+where max_rides.member_casual = date_rides.member_casual
+)
+union all
+select *
+from (
+select start_date, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by start_date, member_casual) as date_rides
+having rides = (
+select 
+min(rides)
+from (select start_date, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by start_date, member_casual) as min_rides
+where min_rides.member_casual = date_rides.member_casual
+)
 
-## find out the total number of rides member\casual
-select count(*) as total_rides_casual
+## find out which week day had the most\least rides 
+select *
+from (
+select day_of_the_week, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by day_of_the_week, member_casual) as day_rides
+having rides = (
+select 
+max(rides)
+from (select day_of_the_week, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by day_of_the_week, member_casual) as max_rides
+where max_rides.member_casual = day_rides.member_casual
+)
+union all
+select *
+from (
+select day_of_the_week, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by day_of_the_week, member_casual) as day_rides
+having rides = (
+select 
+min(rides)
+from (select day_of_the_week, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by day_of_the_week, member_casual) as min_rides
+where min_rides.member_casual = day_rides.member_casual
+)
+  
+## find out which hour had the most\least rides  
+select *
+from (
+select hour_of_the_day, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by hour_of_the_day, member_casual) as hour_rides
+having rides = (
+select 
+max(rides)
+from (select hour_of_the_day, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by hour_of_the_day, member_casual) as max_rides
+where max_rides.member_casual = hour_rides.member_casual
+)
+union all
+select *
+from (
+select hour_of_the_day, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by hour_of_the_day, member_casual) as hour_rides
+having rides = (
+select 
+min(rides)
+from (select hour_of_the_day, member_casual, count(ride_id) as rides 
+from `202004-divvy-tripdata` 
+group by hour_of_the_day, member_casual) as min_rides
+where min_rides.member_casual = hour_rides.member_casual
+)
+  
+## find the total number of rides member\casual
+select member_casual, count(*) as total_rides
 from`202004-divvy-tripdata`
-where member_casual = 'casual'
-================================
-select count(*) as total_rides_member
+group by member_casual
+
+## find the total trip duration member\casual
+select member_casual, sum(trip_duration) as total_trips
 from`202004-divvy-tripdata`
-where member_casual = 'member'
+group by member_casual
+
+## find the total trip that took more than a day member\casual
+select member_casual, sum(trip_duration) as total_trips
+from`202004-divvy-tripdata`
+where trip_duration > 86400
+group by member_casual
+# (86400) is a day in seconds 
