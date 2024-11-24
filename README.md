@@ -20,6 +20,7 @@ bike_share_viz.md: [Tableau dashboards](https://public.tableau.com/views/bike-sh
 
 README.md: This file, documenting the project.
 
+bike_share_insight.md: Giving insight on the analysis of Bike-share data.
 
 # Acknowledgments
 Thanks to Bike Share Data Source for providing the dataset.
