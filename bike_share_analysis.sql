@@ -45,7 +45,7 @@ delete
 from`202004-divvy-tripdata` 
 where trip_duration_time <= 0
 
-### DATA ANALYSIS
+~~ DATA ANALYSIS
 
 ## find statistcs trip duration for Casuals and members
 select 
