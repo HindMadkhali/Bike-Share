@@ -16,12 +16,10 @@ Tableau: Visualizing the data and creating dashboards.
 # Files in This Repository
 bike_share_analysis.sql: SQL queries used for data cleaning and analysis.
 
-bike_share_viz: Tableau dashboards and visual files 
+bike_share_viz.md: [Tableau dashboards](https://public.tableau.com/views/bike-share_17324539453530/Dashboard2?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
 README.md: This file, documenting the project.
 
-# Key Insights 
-Briefly summarize the main findings of your analysis (e.g., busiest stations, popular times, user trends).
 
 # Acknowledgments
 Thanks to Bike Share Data Source for providing the dataset.
